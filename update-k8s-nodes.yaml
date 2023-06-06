@@ -1,0 +1,12 @@
+---
+- hosts: all
+
+  become: true
+  tasks:
+  - name: update all packages
+    apk:
+      update_cache: yes
+      upgrade: yes
+
+  - name: reboot system
+    command: /sbin/reboot -d 5
