@@ -10,7 +10,7 @@
       cache_valid_time: 3600
 
   - name: Upgrade all apt packages
-      apt: 
+    apt: 
       upgrade: dist
       force_apt_get: yes
 
