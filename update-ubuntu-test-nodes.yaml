@@ -1,16 +1,19 @@
 ---
 - hosts: all
   become: true
-  become_method: sudo
 
   tasks:
-    - name: Update apt list
+
+    - name: Install aptitude
       apt:
-        update_cache: yes
+        name: aptitude
+        state: latest
+        update_cache: true
 
     - name: Perform a dist-upgrade.
       apt:
         upgrade: dist
+        update_cache: yes
 
     - name: Check if a reboot is required.
       stat:
