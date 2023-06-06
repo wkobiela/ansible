@@ -2,6 +2,8 @@
 - hosts: all
 
   become: true
+  become_user: root
+  become_method: su
   tasks:
   - name: Update apt-get repo and cache
     apt: 
