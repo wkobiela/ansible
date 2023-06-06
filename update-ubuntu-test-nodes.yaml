@@ -1,6 +1,7 @@
 ---
 - hosts: all
   become: true
+  become_user: root
 
   tasks:
 
@@ -13,7 +14,7 @@
     - name: Perform a dist-upgrade.
       apt:
         upgrade: dist
-        update_cache: yes
+        update_cache: true
 
     - name: Check if a reboot is required.
       stat:
