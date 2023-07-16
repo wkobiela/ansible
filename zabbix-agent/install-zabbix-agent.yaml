@@ -1,7 +1,7 @@
 ---
 - hosts: all
   gather_facts: true
-  become: yes
+  become: true
   become_method: sudo
   tasks:
       - name: Check user
@@ -13,7 +13,7 @@
           msg: "{{ out.stdout_lines }}"
 
       - name: Verify if we have sudo access
-        become: yes
+        become: true
         ansible.builtin.command: id -u
         register: id_output
 
