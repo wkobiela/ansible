@@ -9,16 +9,16 @@
 
       - name: Print output
         debug: 
-          msg: "{{ out }}"
+          msg: "{{ out.stdout_lines }}"
 
       - name: Verify if we have sudo access
         become: yes
-        shell: id -u
+        ansible.builtin.command: id -u
         register: id_output
 
       - name: Print output
         debug: 
-          msg: "{{ id_output }}"
+          msg: "{{ id_output.stdout_lines }}"
 
       - name: Assert output
         assert:
