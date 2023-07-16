@@ -1,6 +1,9 @@
 ---
 - hosts: all
   gather_facts: true
+  become: true
+  become_user: root
+  become_method: enable
   tasks:
       - name: gather os specific variables
         include_vars: "{{ item }}"
@@ -10,51 +13,43 @@
       - name: Download zabbix repo package
         get_url:
             url: "{{ zabbix_repo_url}}"
-            dest: "{{ ansible_env.HOME }}/zabbix.deb"
+            dest: "/tmp/zabbix.deb"
             force: yes
         register: downloaded_file
 
-      - name: Recursively find {{ ansible_env.HOME }} files younger than 2 days
+      - name: Recursively find /tmp files younger than 2 days
         ansible.builtin.find:
-            paths: "{{ ansible_env.HOME }}"
+            paths: "/tmp"
             age: -2d
             recurse: yes
 
       - name: Install zabbix repo
-        become: true
-        become_user: root
-        become_method: enable
         apt:
-            deb: "{{ ansible_env.HOME }}/zabbix.deb"
+            deb: "/tmp/zabbix.deb"
             state: present
 
       - name: Install zabbix agent2
-        become: true
         apt:
             name: zabbix-agent2
             state: present
             update_cache: yes
 
       - name: Stop service zabbix-agent2
-        become: true
         service:
             name: zabbix-agent2
             state: stopped
 
       - name: Remove zabbix config file
-        become: true
         file:
             path: /etc/zabbix/zabbix_agent2.conf
             state: absent
 
       - name: Create new zabbix config file from template
-        become: true
         template:
             src: "templates/zabbix_agent2.conf.j2"
             dest: "/etc/zabbix/zabbix_agent2.conf"
 
       - name: Start service zabbix-agent2
-        become: true
         service:
             name: zabbix-agent2
             state: started
