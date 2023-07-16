@@ -14,14 +14,19 @@
             url: "{{ zabbix_repo_url}}"
             dest: "/tmp/zabbix.deb"
             force: yes
+        register: cmd_out_download_zabbix_repo
+
+      - name: Show apt update output
+        debug:
+          var: cmd_out_download_zabbix_repo.stdout_lines
 
       - name: Install zabbix repo
         shell: sudo dpkg --force-confdef --force-confold -i /tmp/zabbix.deb
-        register: command_output_install_zabbix
+        register: cmd_out_install_zabbix_repo
     
       - name: Show install zabbix repo output
         debug:
-          var: command_output_install_zabbix.stdout_lines
+          var: cmd_out_install_zabbix_repo.stdout_lines
 
       - name: Update apt Cache
         shell: sudo apt update
@@ -40,16 +45,22 @@
           var: cmd_out_zabbix_install.stdout_lines
 
       - name: Remove zabbix config file
+          become_user: root
+          become: true
         file:
             path: /etc/zabbix/zabbix_agent2.conf
             state: absent
 
       - name: Create new zabbix config file from template
+        become_user: root
+        become: true
         template:
             src: "templates/zabbix_agent2.conf.j2"
             dest: "/etc/zabbix/zabbix_agent2.conf"
 
       - name: Start service zabbix-agent2
+        become_user: root
+        become: true
         service:
             name: zabbix-agent2
-            state: started
+            state: restarted
