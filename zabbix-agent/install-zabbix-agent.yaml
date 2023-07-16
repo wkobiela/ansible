@@ -59,7 +59,7 @@
 
       - name: Create new zabbix config file from template
         template:
-          src: /template/zabbix_agent2.conf.j2
+          src: template/zabbix_agent2.conf.j2
           dest: /etc/zabbix/zabbix_agent2.conf
 
       - name: Show copy template output
