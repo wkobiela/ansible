@@ -1,7 +1,6 @@
 ---
 - hosts: all
   gather_facts: true
-  become: true
   tasks:
       - name: gather os specific variables
         include_vars: "{{ item }}"
@@ -22,7 +21,6 @@
             recurse: yes
 
       - name: Install zabbix repo
-        become: true
         apt:
             deb: "{{ ansible_env.HOME }}/zabbix.deb"
             state: present
