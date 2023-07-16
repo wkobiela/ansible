@@ -3,9 +3,9 @@
   gather_facts: true
   tasks:
     - name: Verify if we have sudo access
-      become: true
-        shell: id -u
-        register: id_output
+      become: yes
+      shell: id -u
+      register: id_output
 
     - name: Assert output
       assert:
