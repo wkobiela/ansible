@@ -1,7 +1,8 @@
 ---
 - hosts: all
   gather_facts: true
-  become_user: root
+  #become_user: root
+  remote_user: wk
   become: true
   tasks:
       - name: gather os specific variables
@@ -53,7 +54,6 @@
           var: cmd_out_remove_conf.stdout_lines
 
       - name: Create new zabbix config file from template
-        become_user: wk
         become: true
         template:
             src: "template/zabbix_agent2.conf.j2"
