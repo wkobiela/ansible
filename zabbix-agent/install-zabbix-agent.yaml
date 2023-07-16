@@ -45,11 +45,12 @@
           var: cmd_out_zabbix_install.stdout_lines
 
       - name: Remove zabbix config file
-        become_user: root
-        become: true
-        file:
-            path: /etc/zabbix/zabbix_agent2.conf
-            state: absent
+        shell: sudo rm -rf /etc/zabbix/zabbix_agent2.conf
+        register: cmd_out_remove_conf
+
+      - name: Show remove zabbix config output
+        debug:
+          var: cmd_out_remove_conf.stdout_lines
 
       - name: Create new zabbix config file from template
         become_user: root
