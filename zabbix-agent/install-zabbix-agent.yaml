@@ -17,16 +17,15 @@
             force: yes
         register: downloaded_file
 
-      - name: Recursively find /tmp files younger than 2 days
-        ansible.builtin.find:
-            paths: "/tmp"
-            age: -2d
-            recurse: yes
-
       - name: Install zabbix repo
         apt:
             deb: "/tmp/zabbix.deb"
             state: present
+      
+      - name: Remove apt lock file
+        file:
+            state: absent
+            path: "/var/lib/dpkg/lock-frontend"
 
       - name: Install zabbix agent2
         apt:
