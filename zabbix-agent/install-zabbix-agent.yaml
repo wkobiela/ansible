@@ -53,9 +53,14 @@
         debug:
           var: cmd_out_remove_conf.stdout_lines
 
+      # - name: Create new zabbix config file from template
+      #   shell: sudo cp template/zabbix_agent2.conf.j2 /etc/zabbix/zabbix_agent2.conf
+      #   register: cmd_out_copy_template
+
       - name: Create new zabbix config file from template
-        shell: sudo cp template/zabbix_agent2.conf.j2 /etc/zabbix/zabbix_agent2.conf
-        register: cmd_out_copy_template
+        template:
+          src: /template/zabbix_agent2.conf.j2
+          dest: /etc/zabbix/zabbix_agent2.conf
 
       - name: Show copy template output
         debug:
