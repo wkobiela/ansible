@@ -2,14 +2,14 @@
 - hosts: all
   gather_facts: true
   tasks:
-    - name: Verify if we have sudo access
-      become: yes
-      shell: id -u
-      register: id_output
+      - name: Verify if we have sudo access
+        become: yes
+        shell: id -u
+        register: id_output
 
-    - name: Assert output
-      assert:
-        that: id_output.stdout == '0'
+      - name: Assert output
+        assert:
+          that: id_output.stdout == '0'
 
       - name: gather os specific variables
         include_vars: "{{ item }}"
