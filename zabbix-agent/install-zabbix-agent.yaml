@@ -21,17 +21,30 @@
         apt:
             deb: "/tmp/zabbix.deb"
             state: present
-      
+
+      - name: Update apt Cache
+        apt: 
+            update_cache: yes
+            force_apt_get: yes
+        
       - name: Remove apt lock file
         file:
             state: absent
             path: "/var/lib/dpkg/lock-frontend"
 
+      - name: Remove apt list lock file
+        file:
+            state: absent
+            path: "/var/lib/apt/lists/lock"
+
+      - name: Wait for APT Lock
+        shell:  while fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;
+
       - name: Install zabbix agent2
         apt:
             name: zabbix-agent2
             state: present
-            update_cache: yes
+            force_apt_get: yes
 
       - name: Stop service zabbix-agent2
         service:
