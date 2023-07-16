@@ -1,22 +1,20 @@
 ---
 - hosts: all
   gather_facts: true
-  become: true
-  become_method: sudo
-  become_user: wk
   tasks:
       - name: Check user
         shell: whoami
         register: out
+        become: yes
 
       - name: Print output
         debug: 
           msg: "{{ out.stdout_lines }}"
 
       - name: Verify if we have sudo access
-        become: true
         ansible.builtin.command: id -u
         register: id_output
+        become: yes
 
       - name: Print output
         debug: 
