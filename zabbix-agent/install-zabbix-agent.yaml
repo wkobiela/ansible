@@ -1,8 +1,6 @@
 ---
 - hosts: all
   gather_facts: true
-  #become_user: root
-  remote_user: wk
   become: true
   tasks:
       - name: gather os specific variables
@@ -53,10 +51,6 @@
         debug:
           var: cmd_out_remove_conf.stdout_lines
 
-      # - name: Create new zabbix config file from template
-      #   shell: sudo cp template/zabbix_agent2.conf.j2 /etc/zabbix/zabbix_agent2.conf
-      #   register: cmd_out_copy_template
-
       - name: Create new zabbix config file from template
         template:
           src: template/zabbix_agent2.conf.j2
@@ -67,8 +61,6 @@
           var: cmd_out_copy_template.stdout_lines
 
       - name: Start service zabbix-agent2
-        become_user: root
-        become: true
         service:
             name: zabbix-agent2
             state: restarted
