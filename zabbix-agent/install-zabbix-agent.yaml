@@ -12,12 +12,14 @@
         get_url:
             url: "{{ zabbix_repo_url}}"
             dest: "{{ ansible_env.HOME }}/zabbix.deb"
+            force: yes
+        register: downloaded_file
 
       - name: Recursively find {{ ansible_env.HOME }} files younger than 2 days
         ansible.builtin.find:
-          paths: "{{ ansible_env.HOME }}"
-          age: -2d
-          recurse: yes
+            paths: "{{ ansible_env.HOME }}"
+            age: -2d
+            recurse: yes
 
       - name: Install zabbix repo
         become: true
