@@ -2,6 +2,14 @@
 - hosts: all
   gather_facts: true
   tasks:
+      - name: Check user
+        shell: whoami
+        register: out
+
+      - name: Print output
+        debug: 
+          msg: "{{ out }}"
+
       - name: Verify if we have sudo access
         become: yes
         shell: id -u
