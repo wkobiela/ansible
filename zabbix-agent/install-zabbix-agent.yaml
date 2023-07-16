@@ -14,18 +14,18 @@
       - name: Download zabbix repo package
         get_url:
             url: "{{ zabbix_repo_url}}"
-            dest: {{ home }}/zabbix.deb
+            dest: "{{ home }}/zabbix.deb"
 
       - name: Recursively find {{ home }} files younger than 2 days
         ansible.builtin.find:
-          paths: {{ home }}
+          paths: "{{ home }}"
           age: -2d
           recurse: yes
 
       - name: Install zabbix repo
         become: true
         apt:
-            deb: {{ home }}/zabbix.deb
+            deb: "{{ home }}/zabbix.deb"
             state: present
 
       - name: Install zabbix agent2
