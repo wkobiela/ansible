@@ -8,24 +8,21 @@
         with_first_found:
             - "vars/{{ ansible_distribution }}.yaml"
 
-      - vars:
-        home: "{{ lookup('env', 'HOME') }}"
-
       - name: Download zabbix repo package
         get_url:
             url: "{{ zabbix_repo_url}}"
-            dest: "{{ home }}/zabbix.deb"
+            dest: "{{ ansible_env.HOME }}/zabbix.deb"
 
-      - name: Recursively find {{ home }} files younger than 2 days
+      - name: Recursively find {{ ansible_env.HOME }} files younger than 2 days
         ansible.builtin.find:
-          paths: "{{ home }}"
+          paths: "{{ ansible_env.HOME }}"
           age: -2d
           recurse: yes
 
       - name: Install zabbix repo
         become: true
         apt:
-            deb: "{{ home }}/zabbix.deb"
+            deb: "{{ ansible_env.HOME }}/zabbix.deb"
             state: present
 
       - name: Install zabbix agent2
