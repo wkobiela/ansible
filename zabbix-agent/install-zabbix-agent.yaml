@@ -22,6 +22,16 @@
             deb: "/tmp/zabbix.deb"
             state: present
 
+      - name: Remove apt lock file
+        file:
+            state: absent
+            path: "/var/lib/dpkg/lock-frontend"
+
+      - name: Remove apt list lock file
+        file:
+            state: absent
+            path: "/var/lib/apt/lists/lock"
+
       - name: Update apt Cache
         apt: 
             update_cache: yes
