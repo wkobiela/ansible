@@ -19,6 +19,7 @@
         apt:
             deb: "/tmp/zabbix.deb"
             state: present
+        become: yes
 
       - name: Remove apt lock file
         file:
