@@ -22,6 +22,7 @@
 
       - name: Install zabbix repo
         become: true
+        become_method: enable
         apt:
             deb: "{{ ansible_env.HOME }}/zabbix.deb"
             state: present
