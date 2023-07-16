@@ -28,15 +28,15 @@
         debug:
           var: command_output_install_zabbix.stdout_lines
 
-      - name: Remove apt lock file
-        file:
-            state: absent
-            path: "/var/lib/dpkg/lock-frontend"
+      # - name: Remove apt lock file
+      #   file:
+      #       state: absent
+      #       path: "/var/lib/dpkg/lock-frontend"
 
-      - name: Remove apt list lock file
-        file:
-            state: absent
-            path: "/var/lib/apt/lists/lock"
+      # - name: Remove apt list lock file
+      #   file:
+      #       state: absent
+      #       path: "/var/lib/apt/lists/lock"
 
       - name: Update apt Cache
         shell: sudo apt update
@@ -46,18 +46,18 @@
         debug:
           var: cmd_out_apt_update.stdout_lines
         
-      - name: Remove apt lock file
-        file:
-            state: absent
-            path: "/var/lib/dpkg/lock-frontend"
+      # - name: Remove apt lock file
+      #   file:
+      #       state: absent
+      #       path: "/var/lib/dpkg/lock-frontend"
 
-      - name: Remove apt list lock file
-        file:
-            state: absent
-            path: "/var/lib/apt/lists/lock"
+      # - name: Remove apt list lock file
+      #   file:
+      #       state: absent
+      #       path: "/var/lib/apt/lists/lock"
 
-      - name: Wait for APT Lock
-        shell:  while fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;
+      # - name: Wait for APT Lock
+      #   shell:  while fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;
 
       - name: Install zabbix agent2
         shell: sudo apt install zabbix-agent2 zabbix-agent2-plugin-*
