@@ -3,6 +3,7 @@
   gather_facts: true
   become: true
   become_method: sudo
+  become_user: wk
   tasks:
       - name: Check user
         shell: whoami
