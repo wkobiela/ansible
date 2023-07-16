@@ -1,6 +1,8 @@
 ---
 - hosts: all
   gather_facts: true
+  become_user: root
+  become: true
   tasks:
       - name: gather os specific variables
         include_vars: "{{ item }}"
@@ -15,12 +17,15 @@
 
       - name: Install zabbix repo
         become: yes
-        become_user: root
         # become_method: sudo
         # apt:
         #     deb: "/tmp/zabbix.deb"
         #     state: present
         shell: sudo dpkg --force-confdef --force-confold -i /tmp/zabbix.deb
+        register: command_output_install_zabbix
+    
+      - debug:
+        var: command_output_install_zabbix.stdout_lines
 
       - name: Remove apt lock file
         file:
@@ -33,11 +38,11 @@
             path: "/var/lib/apt/lists/lock"
 
       - name: Update apt Cache
-        become: true
-        become_user: root
-        apt: 
-            update_cache: yes
-            force_apt_get: yes
+        shell: sudo apt update
+        register: cmd_out_apt_update
+
+      - debug:
+        var: cmd_out_apt_update.stdout_lines
         
       - name: Remove apt lock file
         file:
@@ -53,10 +58,11 @@
         shell:  while fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;
 
       - name: Install zabbix agent2
-        apt:
-            name: zabbix-agent2
-            state: present
-            force_apt_get: yes
+        shell: sudo apt install zabbix-agent2 zabbix-agent2-plugin-*
+        register: cmd_out_zabbix_install
+
+      - debug:
+        var: cmd_out_zabbix_install.stdout_lines
 
       - name: Stop service zabbix-agent2
         service:
