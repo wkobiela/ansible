@@ -52,13 +52,11 @@
           var: cmd_out_remove_conf.stdout_lines
 
       - name: Create new zabbix config file from template
+        become: yes
+        become_user: root
         template:
           src: template/zabbix_agent2.conf.j2
           dest: /etc/zabbix/zabbix_agent2.conf
-
-      - name: Show copy template output
-        debug:
-          var: cmd_out_copy_template.stdout_lines
 
       - name: Start service zabbix-agent2
         service:
