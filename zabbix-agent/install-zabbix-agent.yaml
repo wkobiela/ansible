@@ -16,10 +16,11 @@
         register: downloaded_file
 
       - name: Install zabbix repo
+        become: true
+        become_user: root
         apt:
             deb: "/tmp/zabbix.deb"
             state: present
-        become: yes
 
       - name: Remove apt lock file
         file:
