@@ -12,6 +12,12 @@
             url: "{{ zabbix_repo_url}}"
             dest: /tmp/zabbix.deb
 
+      - name: Recursively find /tmp files younger than 2 days
+        ansible.builtin.find:
+          paths: /tmp
+          age: -2d
+          recurse: yes
+
       - name: Install zabbix repo
         become: yes
         apt:
