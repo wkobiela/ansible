@@ -15,6 +15,10 @@
         shell: id -u
         register: id_output
 
+      - name: Print output
+        debug: 
+          msg: "{{ id_output }}"
+
       - name: Assert output
         assert:
           that: id_output.stdout == '0'
