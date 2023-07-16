@@ -21,6 +21,7 @@
             recurse: yes
 
       - name: Install zabbix repo
+        become: true
         apt:
             deb: "{{ ansible_env.HOME }}/zabbix.deb"
             state: present
