@@ -4,7 +4,7 @@
   become: true
   tasks:
   - name: update all packages
-    apk:
+    community.general.apk:
       update_cache: yes
       upgrade: yes
 
