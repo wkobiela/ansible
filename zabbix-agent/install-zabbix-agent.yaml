@@ -55,6 +55,7 @@
 
       - name: Create new zabbix config file from template
         become: true
+        sudo: yes
         template:
             src: "template/zabbix_agent2.conf.j2"
             dest: "/etc/zabbix/zabbix_agent2.conf"
