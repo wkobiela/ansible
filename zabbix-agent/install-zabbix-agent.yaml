@@ -4,8 +4,8 @@
   tasks:
     - name: Verify if we have sudo access
       become: true
-          command: id -u
-          register: id_output
+        shell: id -u
+        register: id_output
 
     - name: Assert output
       assert:
