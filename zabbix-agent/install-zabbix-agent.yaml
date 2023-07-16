@@ -1,7 +1,6 @@
 ---
 - hosts: all
   gather_facts: true
-  become: true
   tasks:
       - name: gather os specific variables
         include_vars: "{{ item }}"
@@ -11,54 +10,34 @@
       - name: Download zabbix repo package
         get_url:
             url: "{{ zabbix_repo_url}}"
-            dest: "/tmp/zabbix.deb"
-            force: yes
-        register: cmd_out_download_zabbix_repo
-
-      - name: Show apt update output
-        debug:
-          var: cmd_out_download_zabbix_repo.stdout_lines
+            dest: /tmp/zabbix.deb
 
       - name: Install zabbix repo
-        shell: sudo dpkg --force-confdef --force-confold -i /tmp/zabbix.deb
-        register: cmd_out_install_zabbix_repo
-    
-      - name: Show install zabbix repo output
-        debug:
-          var: cmd_out_install_zabbix_repo.stdout_lines
+        become: yes
+        apt:
+            deb: /tmp/zabbix.deb
+            state: present
 
-      - name: Update apt Cache
-        shell: sudo apt update
-        register: cmd_out_apt_update
-
-      - name: Show apt update output
-        debug:
-          var: cmd_out_apt_update.stdout_lines
-
-      - name: Install zabbix agent2
-        shell: sudo apt install zabbix-agent2 zabbix-agent2-plugin-*
-        register: cmd_out_zabbix_install
-
-      - name: Show install zabbix packages output
-        debug:
-          var: cmd_out_zabbix_install.stdout_lines
+      - name: Install zabbix agent
+        become: yes
+        apt:
+            name: zabbix-agent2
+            state: present
+            update_cache: yes
 
       - name: Remove zabbix config file
-        shell: sudo rm -rf /etc/zabbix/zabbix_agent2.conf
-        register: cmd_out_remove_conf
-
-      - name: Show remove zabbix config output
-        debug:
-          var: cmd_out_remove_conf.stdout_lines
+        become: yes
+        file:
+            path: /etc/zabbix/zabbix_agentd.conf
+            state: absent
 
       - name: Create new zabbix config file from template
         become: yes
-        become_user: root
         template:
           src: template/zabbix_agent2.conf.j2
           dest: /etc/zabbix/zabbix_agent2.conf
 
-      - name: Start service zabbix-agent2
+      - name: Restart service zabbix-agent2
         service:
             name: zabbix-agent2
             state: restarted
