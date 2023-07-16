@@ -33,6 +33,8 @@
             path: "/var/lib/apt/lists/lock"
 
       - name: Update apt Cache
+        become: true
+        become_user: root
         apt: 
             update_cache: yes
             force_apt_get: yes
