@@ -45,8 +45,8 @@
           var: cmd_out_zabbix_install.stdout_lines
 
       - name: Remove zabbix config file
-          become_user: root
-          become: true
+        become_user: root
+        become: true
         file:
             path: /etc/zabbix/zabbix_agent2.conf
             state: absent
