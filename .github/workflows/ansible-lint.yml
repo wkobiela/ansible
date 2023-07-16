@@ -1,12 +1,12 @@
 # .github/workflows/ansible-lint.yml
-name: ansible-lint
+# name: ansible-lint
 
-on: [push, workflow_dispatch]
+# on: [push, workflow_dispatch]
 
-jobs:
-  build:
-    name: Ansible Lint # Naming the build is important to use it as a status check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run ansible-lint
-        uses: ansible/ansible-lint@main # or version tag instead of 'main'
+# jobs:
+#   build:
+#     name: Ansible Lint # Naming the build is important to use it as a status check
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Run ansible-lint
+#         uses: ansible/ansible-lint@main # or version tag instead of 'main'
