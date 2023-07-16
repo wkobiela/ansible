@@ -24,8 +24,9 @@
         shell: sudo dpkg --force-confdef --force-confold -i /tmp/zabbix.deb
         register: command_output_install_zabbix
     
-      - debug:
-        var: command_output_install_zabbix.stdout_lines
+      - name: Show install zabbix repo output
+        debug:
+          var: command_output_install_zabbix.stdout_lines
 
       - name: Remove apt lock file
         file:
@@ -41,8 +42,9 @@
         shell: sudo apt update
         register: cmd_out_apt_update
 
-      - debug:
-        var: cmd_out_apt_update.stdout_lines
+      - name: Show apt update output
+        debug:
+          var: cmd_out_apt_update.stdout_lines
         
       - name: Remove apt lock file
         file:
